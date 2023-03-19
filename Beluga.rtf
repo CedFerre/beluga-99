@@ -1,0 +1,38 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2708
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red200\green201\blue201;
+}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c100000\c100000\c99985\c0;\cssrgb\c82313\c82707\c82688;
+}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs30 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec4 const \{ WebClient \} = require('@slack/web-api');\
+const \{ createEventAdapter \} = require('@slack/events-api');\
+const slackSigningSecret = process.env.SLACK_SIGNING_SECRET;\
+const slackToken = process.env.SLACK_BOT_TOKEN;\
+const port = process.env.PORT || 3000;\
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec4 const slackEvents = createEventAdapter(slackSigningSecret);\
+const web = new WebClient(slackToken);\
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec4 slackEvents.on('message', (event) => \{\
+\'a0\'a0if (event.text.toLowerCase().includes('hello')) \{\
+\'a0\'a0\'a0\'a0web.chat.postMessage(\{\
+\'a0\'a0\'a0\'a0\'a0\'a0channel: event.channel,\
+\'a0\'a0\'a0\'a0\'a0\'a0text: `Hi there <@$\{event.user\}>!`,\
+\'a0\'a0\'a0\'a0\});\
+\'a0\'a0\}\
+\});\
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec4 slackEvents.start(port).then(() => \{\
+\'a0\'a0console.log(`Listening on port $\{port\}`);\
+\});}
